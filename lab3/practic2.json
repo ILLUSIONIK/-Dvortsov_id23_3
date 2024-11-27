@@ -1,0 +1,37 @@
+{
+    "planets": [
+        {
+            "distance": 100,
+            "speed": 0.02,
+            "satellites": [
+                {"distance": 20, "speed": 0.05, "color": "gray", "density": 255, "radius": 2},
+                {"distance": 30, "speed": 0.03, "color": "lightgray", "density": 255, "radius": 3}
+            ],
+            "color": "blue",
+            "density": 255,
+            "radius": 13
+        },
+        {
+            "distance": 150,
+            "speed": 0.015,
+            "satellites": [
+                {"distance": 30, "speed": 0.04, "color": "white", "density": 255, "radius": 1},
+                {"distance": 40, "speed": 0.02, "color": "lightblue", "density": 255, "radius": 2}
+            ],
+            "color": "red",
+            "density": 100,
+            "radius": 15
+        },
+        {
+            "distance": 200,
+            "speed": 0.01,
+            "satellites": [
+                {"distance": 40, "speed": 0.03, "color": "darkgray", "density": 255, "radius": 2},
+                {"distance": 50, "speed": 0.01, "color": "silver", "density": 255, "radius": 1}
+            ],
+            "color": "green",
+            "density": 75,
+            "radius": 12
+        }
+    ]
+}

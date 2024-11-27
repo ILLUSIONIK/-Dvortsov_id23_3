@@ -270,7 +270,7 @@ class SolarSystem(QMainWindow):
 def main():
     app = QApplication(sys.argv)
 
-    planet_data = json.load(open('../../practic2.json'))['planets']
+    planet_data = json.load(open('practic2.json'))['planets']
 
     window = SolarSystem(planet_data)
     window.show()
