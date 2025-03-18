@@ -1,1 +1,161 @@
+import os
+import shutil
+import json
 
+# Загрузка настроек
+CONFIG_FILE = "config.json"
+if not os.path.exists(CONFIG_FILE):
+    with open(CONFIG_FILE, "w") as f:
+        json.dump({"root": "./workspace"}, f)
+
+with open(CONFIG_FILE) as f:
+    config = json.load(f)
+
+ROOT_DIR = os.path.abspath(config["root"])
+if not os.path.exists(ROOT_DIR):
+    os.makedirs(ROOT_DIR)
+
+current_path = ROOT_DIR
+
+
+def mkdir(name):
+    path = os.path.join(current_path, name)
+    os.makedirs(path, exist_ok=True)
+    print(f"Папка '{name}' создана.")
+
+
+def rmdir(name):
+    path = os.path.join(current_path, name)
+    shutil.rmtree(path, ignore_errors=True)
+    print(f"Папка '{name}' удалена.")
+
+
+def cd(name):
+    global current_path
+    if name == "..":
+        new_path = os.path.dirname(current_path)
+        if os.path.commonpath([new_path, ROOT_DIR]) == ROOT_DIR:
+            current_path = new_path
+    else:
+        new_path = os.path.join(current_path, name)
+        if os.path.isdir(new_path):
+            current_path = new_path
+    print(f"Текущая директория: {current_path}")
+
+
+def touch(name):
+    path = os.path.join(current_path, name)
+    open(path, "a").close()
+    print(f"Файл '{name}' создан.")
+
+
+def write(name, text):
+    path = os.path.join(current_path, name)
+    with open(path, "w") as f:
+        f.write(text)
+    print(f"Текст записан в '{name}'.")
+
+
+def cat(name):
+    path = os.path.join(current_path, name)
+    with open(path) as f:
+        print(f.read())
+
+
+def rm(name):
+    path = os.path.join(current_path, name)
+    os.remove(path)
+    print(f"Файл '{name}' удалён.")
+
+
+def cp(src, dest):
+    src_path = os.path.join(current_path, src)
+    dest_path = os.path.join(current_path, dest, src)
+    shutil.copy2(src_path, dest_path)
+    print(f"Файл '{src}' скопирован в '{dest}'.")
+
+
+def mv(src, dest):
+    src_path = os.path.join(current_path, src)
+    dest_path = os.path.join(current_path, dest, src)
+    shutil.move(src_path, dest_path)
+    print(f"Файл '{src}' перемещён в '{dest}'.")
+
+
+def rename(old, new):
+    old_path = os.path.join(current_path, old)
+    new_path = os.path.join(current_path, new)
+    os.rename(old_path, new_path)
+    print(f"Файл '{old}' переименован в '{new}'.")
+
+
+def main():
+
+    while True:
+        print("\nВыберите действие:")
+        print("1. Создать папку")
+        print("2. Удалить папку")
+        print("3. Перейти в папку")
+        print("4. Выйти на уровень вверх")
+        print("5. Создать файл")
+        print("6. Записать текст в файл")
+        print("7. Просмотреть содержимое файла")
+        print("8. Удалить файл")
+        print("9. Копировать файл")
+        print("10. Переместить файл")
+        print("11. Переименовать файл")
+        print("12. Выйти")
+
+        try:
+            choice = input("Введите номер операции: ")
+        except Exception as e:
+            print(f"Ошибка ввода: {e}")
+            continue
+
+        print(f"Вы выбрали: {choice}")  # Отладочный вывод
+
+        if choice == "1":
+            name = input("Введите имя папки: ")
+            mkdir(name)
+        elif choice == "2":
+            name = input("Введите имя папки: ")
+            rmdir(name)
+        elif choice == "3":
+            name = input("Введите имя папки: ")
+            cd(name)
+        elif choice == "4":
+            cd("..")
+        elif choice == "5":
+            name = input("Введите имя файла: ")
+            touch(name)
+        elif choice == "6":
+            name = input("Введите имя файла: ")
+            text = input("Введите текст: ")
+            write(name, text)
+        elif choice == "7":
+            name = input("Введите имя файла: ")
+            cat(name)
+        elif choice == "8":
+            name = input("Введите имя файла: ")
+            rm(name)
+        elif choice == "9":
+            src = input("Введите имя файла: ")
+            dest = input("Введите папку назначения: ")
+            cp(src, dest)
+        elif choice == "10":
+            src = input("Введите имя файла: ")
+            dest = input("Введите папку назначения: ")
+            mv(src, dest)
+        elif choice == "11":
+            old = input("Введите текущее имя файла: ")
+            new = input("Введите новое имя файла: ")
+            rename(old, new)
+        elif choice == "12":
+            print("Выход из программы.")
+            break
+        else:
+            print("Некорректный ввод. Попробуйте снова.")
+
+if __name__ == "__main__":
+
+    main()
